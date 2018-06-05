@@ -10,7 +10,7 @@ module.exports = function dataFormatter(data, schema, debug) {
         return data;
     }
     const output = cloneDeep(data);
-    return formatRecursion(output, schema, debug);
+    return formatRecursion(output, schema, 0, debug);
 };
 
 function formatArray(currentTree, filterItem, currentSchema, depth, debug) {
@@ -26,7 +26,7 @@ function formatArray(currentTree, filterItem, currentSchema, depth, debug) {
     if (!currentTree[filterItem] instanceof Array) {
         currentTree[filterItem] = [];
     } else {
-
+         
     }
 }
 
