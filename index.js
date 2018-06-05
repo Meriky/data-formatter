@@ -13,6 +13,23 @@ module.exports = function dataFormatter(data, schema, debug) {
     return formatRecursion(output, schema, debug);
 };
 
+function formatArray(currentTree, filterItem, currentSchema, depth, debug) {
+    const arraySchema = currentSchema[filterItem];
+    const keys = Object.keys(arraySchema);
+    let arrayElemNum = 0;
+    if (keys.length !== 1) {
+        // 非法输入，filterItem应为single key object
+    } else {
+        arrayElemNum = keys[0]; 
+    }
+
+    if (!currentTree[filterItem] instanceof Array) {
+        currentTree[filterItem] = [];
+    } else {
+
+    }
+}
+
 // currentTree: 递归树的当前子树
 // currentSchema: 规则递归树的当前子树
 // depth: 递归层级
@@ -31,8 +48,11 @@ function formatRecursion(currentTree, currentSchema, depth, debug) {
                 }
                 formatRecursion(currentTree[item], currentSchema[item], depth + 1, debug);
                 break;
-            case 'array': 
-
+            case 'array':
+                formatArray(currentTree, item, currentSchema, depth, debug);
+                break;
+            default:
+                // to do -- illegal param 
         }
     });
 }
