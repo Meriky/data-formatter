@@ -26,7 +26,7 @@ function formatArray(currentTree, filterItem, currentSchema, depth, debug) {
     if (!currentTree[filterItem] instanceof Array) {
         currentTree[filterItem] = [];
     } else {
-         
+        // 正常Array情况下 1, array为空，2，array元素         
     }
 }
 
