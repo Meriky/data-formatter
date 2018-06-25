@@ -13,11 +13,11 @@ module.exports = function dataFormatter(data, schema, debug) {
 };
 
 function formatArray(currentTree, currentSchema, depth, debug) {
-    const currentSchemaKey = Object.keys(currentSchemaKey)[0];
+    const currentSchemaKey = Object.keys(currentSchema)[0];
     const arraySchema = currentSchema[currentSchemaKey];
     const arraySchemaKey = Object.keys(arraySchema);
 
-    const { key, type } = keySplitInfo(currentSchemaKey, debug);
+    const { key, type, eleType } = keySplitInfo(currentSchemaKey, debug);
 
     let arrayElemNum = 0;
     if (keys.length !== 1) {
@@ -34,8 +34,15 @@ function formatArray(currentTree, currentSchema, depth, debug) {
     }
     if (currentTreeNode.length === 0) {
         for (let i = 0; i < arrayElemNum; i++) {
-        }// 正常Array情况下 1, array为空，2，array元素
+            currentTreeNode.push(createArrayElement(arraySchema[arraySchemaKey]), eleType);
+        } // 正常Array情况下 1, array为空，2，array元素
     }
+}
+
+function createArrayElement(schema, eleType) {
+    let element;
+    if ()
+    return element;
 }
 
 // currentTree: 递归树的当前子树
@@ -47,8 +54,8 @@ function formatRecursion(currentTree, currentSchema, depth, debug) {
     schemaKeys.map((item) => {
         const { key, type } = keySplitInfo(item, debug);
         switch (type) {
-            case 'number': currentTree[item] = parseInt(currentSchema[item]); break;
-            case 'string': currentTree[item] = currentSchema[item] + ''; break;
+            case 'number': currentTree[item] = checkingNumber(currentTree[item], currentSchema[item]); break;
+            case 'string': currentTree[item] = checkingNumber(currentTree[item], currentSchema[item]) + ''; break;
             case 'undefined': currentTree[item] = undefined; break;
             case 'object':
                 if (!currentTree[item] instanceof Object || !currentTree[item]) {
@@ -78,6 +85,12 @@ function keySplitInfo(key, debug) {
             key: keywords[0],
             type: keywords[1],
         };
+    } else if (keywords.length === 3) {
+        return {
+            key: keywords[0],
+            type: keywords[1],
+            eleType: keywords[2],
+        };
     } else {
         const type = keywords.pop();
         return {
@@ -86,3 +99,12 @@ function keySplitInfo(key, debug) {
         };
     }
 }
+
+function checkingNumber(currentItem, currentSchema) {
+    return typeof currentItem === 'number' ? currentItem : parseInt(currentSchema, 10);
+}
+
+function checkingString(currentItem, currentSchema) {
+    return typeof currentItem === 'string' ? currentItem : currentSchema + '';
+}
+
