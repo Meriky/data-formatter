@@ -1,8 +1,7 @@
 'use strict';
 
-const cloneDeep = require('clone-deep');
+const cloneDeep = require('clone-deep'); // data: 输入的数据
 
-// data: 输入的数据
 // schema: 输入的数据schema
 // debug: 调试模式
 module.exports = function dataFormatter(data, schema, debug) {
@@ -13,20 +12,29 @@ module.exports = function dataFormatter(data, schema, debug) {
     return formatRecursion(output, schema, 0, debug);
 };
 
-function formatArray(currentTree, filterItem, currentSchema, depth, debug) {
-    const arraySchema = currentSchema[filterItem];
-    const keys = Object.keys(arraySchema);
+function formatArray(currentTree, currentSchema, depth, debug) {
+    const currentSchemaKey = Object.keys(currentSchemaKey)[0];
+    const arraySchema = currentSchema[currentSchemaKey];
+    const arraySchemaKey = Object.keys(arraySchema);
+
+    const { key, type } = keySplitInfo(currentSchemaKey, debug);
+
     let arrayElemNum = 0;
     if (keys.length !== 1) {
         // 非法输入，filterItem应为single key object
     } else {
-        arrayElemNum = keys[0]; 
+        arrayElemNum = arraySchemaKey[0]; 
     }
 
-    if (!currentTree[filterItem] instanceof Array) {
-        currentTree[filterItem] = [];
-    } else {
-        // 正常Array情况下 1, array为空，2，array元素         
+    const currentTreeNode = currentTree[key];
+
+
+    if (!currentTreeNode instanceof Array) {
+        currentTreeNode = [];
+    }
+    if (currentTreeNode.length === 0) {
+        for (let i = 0; i < arrayElemNum; i++) {
+        }// 正常Array情况下 1, array为空，2，array元素
     }
 }
 
@@ -44,7 +52,7 @@ function formatRecursion(currentTree, currentSchema, depth, debug) {
             case 'undefined': currentTree[item] = undefined; break;
             case 'object':
                 if (!currentTree[item] instanceof Object || !currentTree[item]) {
-                    currentTree[item] = {}; 
+                    currentTree[item] = {};
                 }
                 formatRecursion(currentTree[item], currentSchema[item], depth + 1, debug);
                 break;
